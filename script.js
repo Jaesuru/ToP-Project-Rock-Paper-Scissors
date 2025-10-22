@@ -1,4 +1,4 @@
-console.log("Hello, world!");
+console.log("Intializing game...");
 
 // The getComputerChoice function will randomly pick either 
 // "rock", "paper", or "scissors" as one of its options and return that value.
@@ -27,3 +27,4 @@ function getHumanChoice() {
 }
 
 // console.log(getHumanChoice());
+
