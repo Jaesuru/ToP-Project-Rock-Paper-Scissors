@@ -34,63 +34,53 @@ function getHumanChoice() {
 // that will be the overall gameplay in one session. Five rounds, tallying up scores.
 // Winner wins all the marbles. 
 
-const rock = document.getElementById("rockBtn");
-const paper = document.getElementById("paperBtn");
-const scissor = document.getElementById("scissorBtn");
-
 var humanScore = 0;
 var computerScore = 0;
 
+const results = document.getElementById("results");
+const score = document.getElementById("score");
 
 // playRound is the main function for the game to determine who the winner is
 // by comparing individually the human and computer choice 
 // and incrementing values depending on who wins or not.
-function playRound(humanChoice, computerChoice) {
-    humanChoice = humanChoice.toLowerCase();
-    computerChoice = computerChoice;
-    console.log(`The computer chooses... ${computerChoice}!`);
+function playRound(humanChoice) {
+    if (humanScore >= 5 || computerScore >= 5) {
+        return;
+    }
 
-    if (humanChoice == "rock") {
-        if (computerChoice == "rock") {
-            return " >It's a tie!";
-        } else if (computerChoice == "paper") {
-            computerScore++;
-            return " >You lose! Paper beats rock.";
-        } else {
-            humanScore++;
-            return " >You win! Rock beats scissors.";
-        }
-    } else if (humanChoice == "paper") {
-        if (computerChoice == "rock") {
-            humanScore++;
-            return " >You win! Paper beats rock";
-        } else if (computerChoice == "paper") {
-            return " >It's a tie!";
-        } else {
-            computerScore++;
-            return " >You lose! Scissors beats paper.";
-        }
+    const computerChoice = getComputerChoice();
+    let resultText = `The computer chose ${computerChoice}!`;
+
+        if (humanChoice === computerChoice) {
+        resultText += " It's a tie!";
+    } else if (
+        (humanChoice === "rock" && computerChoice === "scissors") ||
+        (humanChoice === "paper" && computerChoice === "rock") ||
+        (humanChoice === "scissors" && computerChoice === "paper")
+    ) {
+        humanScore++;
+        resultText += " You win this round!";
     } else {
-        if (computerChoice == "rock") {
-            computerScore++;
-            return " >You lose! Rock beats scissors.";
-        } else if (computerChoice == "paper") {
-            humanScore++;
-            return(" >You win! Scissors beat paper.");
-        } else {
-            return(" >It's a tie!");
-        }
+        computerScore++;
+        resultText += " You lose this round!";
+    }
+
+    results.textContent = resultText;
+    score.textContent = `Player: ${humanScore} | Computer: ${computerScore}`;
+
+    if (humanScore === 5) { 
+        results.textContent += `You won!`;
+    } else {
+        results.textContent += `You lose...`;
     }
 }
 
-console.log("Tallying up total scores...");
-console.log(`Your score: ${humanScore}`);
-console.log(`Computer's score: ${computerScore}`);
-
-if (humanScore < computerScore) {
-    console.log("You lost!");
-} else if (computerScore > humanScore) {
-    console.log("You won!");
-} else if (computerScore == humanScore){
-    console.log("It was a tie?!");
-}
+document.getElementById("rockBtn").addEventListener("click", () => {
+    playRound("rock");
+});
+document.getElementById("paperBtn").addEventListener("click", () => {
+    playRound("paper");
+});
+document.getElementById("scissorBtn").addEventListener("click", () => {
+    playRound("scissor");
+});
